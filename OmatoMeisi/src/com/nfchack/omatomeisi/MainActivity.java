@@ -10,6 +10,7 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(LOG_TAG, "onCreate");
 		setContentView(R.layout.activity_main);
 	}
 
@@ -36,6 +38,8 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 
+		Log.d(LOG_TAG, "onResume");
+		
 		// ▼▼▼▼ここから
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -84,6 +88,8 @@ public class MainActivity extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
+		
+		Log.d(LOG_TAG, "onPause");
 
 		// ▼▼▼▼ここから
 		// アプリが表示されてない時は、NFCに反応しなくてもいいようにする
@@ -96,6 +102,8 @@ public class MainActivity extends Activity {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 
+		Log.d(LOG_TAG, "NFCタグ読み込みスタート");
+		
 		// ▼▼▼▼ここから
 		String action = intent.getAction();
 		if (TextUtils.isEmpty(action)) {

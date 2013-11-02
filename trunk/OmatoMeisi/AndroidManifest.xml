@@ -8,6 +8,12 @@
         android:minSdkVersion="10"
         android:targetSdkVersion="10" />
 
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -21,6 +27,24 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- ▼アプリ立ち上げてなくても反応 -->
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+            <!-- 新規作成したnfc_tech_filter.xml▲ -->
+            <!-- ▲アプリ立ち上げてなくても反応 -->
+        </activity>
+        <activity
+            android:name="com.test.nfc_test.ResultActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance" >
         </activity>
     </application>
 

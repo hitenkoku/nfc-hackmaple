@@ -24,7 +24,8 @@ public class ResultActivity extends Activity {
 	private ListView lv = null;
 	private TextView tv = null;
 	private TextView tv2 = null;
-
+    private MediaPlayer mp;
+    
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
@@ -53,22 +54,33 @@ public class ResultActivity extends Activity {
 		dataList = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1);
     
-        if(stringBuilder.equals(demoFirst)){
+         if(stringBuilder.equals(demoFirst)){
             image.setImageResource(R.drawable.pronama_s);
+                
             tv.setText("蒼井慧");
             tv2.setText("私が蒼井慧です！");
+                
             dataList.add("Facebook : KureiKei");
             dataList.add("Twitter : @pronama");
             dataList.add("niconico : コミュニティco9320");
             dataList.add("今一番ほしいもの：Surface2 Pro");
-        } else{
+            successAudioStart();
+                
+         } else{
             tv.setText("Anna Takao");
             tv2.setText("Brilliant Service Co.Ltd.");
             dataList.add("Facebook:");
             dataList.add("Twitter : @meco300");
             dataList.add("Linkedin:");
             dataList.add("Latest favorite bar:村さ来　品川店");
+            successAudioStart();
         }
         lv.setAdapter(dataList);
 	}
+}
+
+
+private void successAudioStart(){
+    mp = MediaPlayer.create(this,R.raw.success);
+    mp.start();
 }

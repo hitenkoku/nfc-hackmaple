@@ -117,7 +117,6 @@ public class MainActivity extends Activity {
 		byte[] rawId = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
 		String id = "nothing";
 		id = bytesToString(rawId);
-		Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
 
 		// ▼NFCの中身を取得する
 		// NdefMessageをParcelable型で取得。NdefMessageが並列でいくつかあるパターンがある。
@@ -144,8 +143,7 @@ public class MainActivity extends Activity {
 						.show();
 			}
 		} else {
-			Toast.makeText(getApplicationContext(), "中身のないタグです",
-					Toast.LENGTH_SHORT).show();
+			// とりあえず何もしない
 		}
 
 		// データ持って画面遷移

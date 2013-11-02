@@ -5,6 +5,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -32,7 +33,7 @@ public class ResultActivity extends Activity {
 
 		Intent intent = getIntent();
 
-		// NFCのIdと日付をこねこねして乱数ぽいのをつくる
+		// NFC縺ｮId縺ｨ譌･莉倥ｒ縺薙�縺薙�縺励※荵ｱ謨ｰ縺ｽ縺��繧偵▽縺上ｋ
 		int[] idIntList = intent.getIntArrayExtra("idIntList");
 
 		Date date = new Date();
@@ -57,13 +58,13 @@ public class ResultActivity extends Activity {
          if(stringBuilder.equals(demoFirst)){
             image.setImageResource(R.drawable.pronama_s);
                 
-            tv.setText("蒼井慧");
-            tv2.setText("私が蒼井慧です！");
+            tv.setText("闥ｼ莠墓�");
+            tv2.setText("遘√′闥ｼ莠墓�縺ｧ縺呻ｼ�);
                 
             dataList.add("Facebook : KureiKei");
             dataList.add("Twitter : @pronama");
-            dataList.add("niconico : コミュニティco9320");
-            dataList.add("今一番ほしいもの：Surface2 Pro");
+            dataList.add("niconico : 繧ｳ繝溘Η繝九ユ繧｣co9320");
+            dataList.add("莉贋ｸ�分縺ｻ縺励＞繧ゅ��售urface2 Pro");
             successAudioStart();
                 
          } else{
@@ -72,7 +73,7 @@ public class ResultActivity extends Activity {
             dataList.add("Facebook:");
             dataList.add("Twitter : @meco300");
             dataList.add("Linkedin:");
-            dataList.add("Latest favorite bar:村さ来　品川店");
+            dataList.add("Latest favorite bar:譚代＆譚･縲�刀蟾晏ｺ�);
             successAudioStart();
         }
         lv.setAdapter(dataList);

@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	public static final String LOG_TAG = MainActivity.class.getSimpleName();
+	private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
 	private NfcAdapter mNfcAdapter;
 

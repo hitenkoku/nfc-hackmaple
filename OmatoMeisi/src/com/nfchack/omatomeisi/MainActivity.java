@@ -16,168 +16,168 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-	private NfcAdapter mNfcAdapter;
+    private NfcAdapter mNfcAdapter;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.d(LOG_TAG, "onCreate");
-		setContentView(R.layout.activity_main);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "onCreate");
+        setContentView(R.layout.activity_main);
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-		Log.d(LOG_TAG, "onResume");
-		
-		// ▼▼▼▼ここから
-		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        Log.d(LOG_TAG, "onResume");
 
-		// ▼NFCの機能判定
-		// NFC機能なし機種
-		if (mNfcAdapter == null) {
-			Toast.makeText(getApplicationContext(), "no Nfc feature",
-					Toast.LENGTH_SHORT).show();
-			finish();
-			return;
-		}
+        // ▼▼▼▼ここから
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-		// NFC通信OFFモード
-		if (!mNfcAdapter.isEnabled()) {
-			Toast.makeText(getApplicationContext(), "off Nfc feature",
-					Toast.LENGTH_SHORT).show();
-			finish();
-			return;
-		}
-		// ▲NFCの機能判定
+        // ▼NFCの機能判定
+        // NFC機能なし機種
+        if (mNfcAdapter == null) {
+            Toast.makeText(getApplicationContext(), "no Nfc feature",
+                    Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-		// NFCを見つけたときに反応させる
-		// PendingIntent→タイミング（イベント発生）を指定してIntentを発生させる
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-				new Intent(this, getClass()), 0);
+        // NFC通信OFFモード
+        if (!mNfcAdapter.isEnabled()) {
+            Toast.makeText(getApplicationContext(), "off Nfc feature",
+                    Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        // ▲NFCの機能判定
 
-		// タイミングは、タグ発見時とする。
-		IntentFilter[] intentFilter = new IntentFilter[] { new IntentFilter(
-				NfcAdapter.ACTION_TAG_DISCOVERED) };
+        // NFCを見つけたときに反応させる
+        // PendingIntent→タイミング（イベント発生）を指定してIntentを発生させる
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, getClass()), 0);
 
-		// 反応するタグの種類を指定。
-		String[][] techList = new String[][] { {
-				android.nfc.tech.NfcA.class.getName(),
-				android.nfc.tech.NfcB.class.getName(),
-				android.nfc.tech.IsoDep.class.getName(),
-				android.nfc.tech.MifareClassic.class.getName(),
-				android.nfc.tech.MifareUltralight.class.getName(),
-				android.nfc.tech.NdefFormatable.class.getName(),
-				android.nfc.tech.NfcV.class.getName(),
-				android.nfc.tech.NfcF.class.getName(), } };
-		mNfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter,
-				techList);
-		// ▲▲▲▲▲ここまで
-	}
+        // タイミングは、タグ発見時とする。
+        IntentFilter[] intentFilter = new IntentFilter[] { new IntentFilter(
+                NfcAdapter.ACTION_TAG_DISCOVERED) };
 
-	@Override
-	public void onPause() {
-		super.onPause();
-		
-		Log.d(LOG_TAG, "onPause");
+        // 反応するタグの種類を指定。
+        String[][] techList = new String[][] { {
+                android.nfc.tech.NfcA.class.getName(),
+                android.nfc.tech.NfcB.class.getName(),
+                android.nfc.tech.IsoDep.class.getName(),
+                android.nfc.tech.MifareClassic.class.getName(),
+                android.nfc.tech.MifareUltralight.class.getName(),
+                android.nfc.tech.NdefFormatable.class.getName(),
+                android.nfc.tech.NfcV.class.getName(),
+                android.nfc.tech.NfcF.class.getName(), } };
+        mNfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter,
+                techList);
+        // ▲▲▲▲▲ここまで
+    }
 
-		// ▼▼▼▼ここから
-		// アプリが表示されてない時は、NFCに反応しなくてもいいようにする
-		mNfcAdapter.disableForegroundDispatch(this);
-		// ▲▲▲▲▲ここまで
-	}
+    @Override
+    public void onPause() {
+        super.onPause();
 
-	// NFCをタッチした後の処理
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
+        Log.d(LOG_TAG, "onPause");
 
-		Log.d(LOG_TAG, "NFCタグ読み込みスタート");
-		
-		// ▼▼▼▼ここから
-		String action = intent.getAction();
-		if (TextUtils.isEmpty(action)) {
-			return;
-		}
+        // ▼▼▼▼ここから
+        // アプリが表示されてない時は、NFCに反応しなくてもいいようにする
+        mNfcAdapter.disableForegroundDispatch(this);
+        // ▲▲▲▲▲ここまで
+    }
 
-		if (!action.equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-			return;
-		}
+    // NFCをタッチした後の処理
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
-		byte[] rawId = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
-		String id = "nothing";
-		id = bytesToString(rawId);
+        Log.d(LOG_TAG, "NFCタグ読み込みスタート");
 
-		// ▼NFCの中身を取得する
-		// NdefMessageをParcelable型で取得。NdefMessageが並列でいくつかあるパターンがある。
-		Parcelable[] rawMessage = intent
-				.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        // ▼▼▼▼ここから
+        String action = intent.getAction();
+        if (TextUtils.isEmpty(action)) {
+            return;
+        }
 
-		if (rawMessage != null) {
-			// Parcelable型からNdefMessage型に入れ直す。
-			NdefMessage[] msgs = new NdefMessage[rawMessage.length];
-			String str = "";
+        if (!action.equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
+            return;
+        }
 
-			for (int i = 0; i < rawMessage.length; i++) {
-				msgs[i] = (NdefMessage) rawMessage[i];
-				// NdefMessageをNdefRecordにバラす。
-				for (NdefRecord record : msgs[i].getRecords()) {
-					// データ本体のPayload部を取り出す。バイト配列。
-					byte[] payload = record.getPayload();
-					for (byte data : payload) {
-						// 負の値が入ってる場合があるので"& 0xff"をつける
-						str += String.format("%c", data & 0xff);
-					}
-				}
-				Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT)
-						.show();
-			}
-		} else {
-			// とりあえず何もしない
-		}
+        byte[] rawId = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+        String id = "nothing";
+        id = bytesToString(rawId);
 
-		// データ持って画面遷移
-		int[] intList = byteToInt(rawId);
+        // ▼NFCの中身を取得する
+        // NdefMessageをParcelable型で取得。NdefMessageが並列でいくつかあるパターンがある。
+        Parcelable[] rawMessage = intent
+                .getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 
-		Intent intent2 = new Intent(MainActivity.this, ResultActivity.class);
-		intent2.putExtra("idIntList", intList);
-		startActivity(intent2);
-	}
+        if (rawMessage != null) {
+            // Parcelable型からNdefMessage型に入れ直す。
+            NdefMessage[] msgs = new NdefMessage[rawMessage.length];
+            String str = "";
 
-	// byte配列をStringにして返す
-	public String bytesToString(byte[] bytes) {
-		StringBuilder buffer = new StringBuilder();
-		boolean isFirst = true;
+            for (int i = 0; i < rawMessage.length; i++) {
+                msgs[i] = (NdefMessage) rawMessage[i];
+                // NdefMessageをNdefRecordにバラす。
+                for (NdefRecord record : msgs[i].getRecords()) {
+                    // データ本体のPayload部を取り出す。バイト配列。
+                    byte[] payload = record.getPayload();
+                    for (byte data : payload) {
+                        // 負の値が入ってる場合があるので"& 0xff"をつける
+                        str += String.format("%c", data & 0xff);
+                    }
+                }
+                Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        } else {
+            // とりあえず何もしない
+        }
 
-		for (byte b : bytes) {
-			if (isFirst) {
-				isFirst = false;
-			} else {
-				buffer.append("-");
-			}
-			buffer.append(Integer.toString(b & 0xff));
-		}
-		return buffer.toString();
-	}
+        // データ持って画面遷移
+        int[] intList = byteToInt(rawId);
 
-	// byte配列をInt配列にして返す
-	public int[] byteToInt(byte[] bytes) {
-		int[] result = new int[bytes.length];
+        Intent intent2 = new Intent(MainActivity.this, ResultActivity.class);
+        intent2.putExtra("idIntList", intList);
+        startActivity(intent2);
+    }
 
-		for (int i = 0; i < bytes.length; i++) {
-			result[i] = bytes[i] & 0xff;
-		}
-		return result;
-	}
+    // byte配列をStringにして返す
+    public String bytesToString(byte[] bytes) {
+        StringBuilder buffer = new StringBuilder();
+        boolean isFirst = true;
+
+        for (byte b : bytes) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                buffer.append("-");
+            }
+            buffer.append(Integer.toString(b & 0xff));
+        }
+        return buffer.toString();
+    }
+
+    // byte配列をInt配列にして返す
+    public int[] byteToInt(byte[] bytes) {
+        int[] result = new int[bytes.length];
+
+        for (int i = 0; i < bytes.length; i++) {
+            result[i] = bytes[i] & 0xff;
+        }
+        return result;
+    }
 
 }

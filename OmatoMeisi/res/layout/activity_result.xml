@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="32dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/pronama_s" />
 
     <TextView
         android:id="@+id/textView1"
@@ -45,6 +45,6 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/imageView1"
         android:layout_marginTop="40dp" >
-
     </ListView>
+
 </RelativeLayout>
